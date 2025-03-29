@@ -15,17 +15,25 @@ import java.util.Map;
 public class Lab1 {
 
      public static void main(String[] args) throws IOException {
-        String file = "C:\\Users\\nsoko\\Downloads\\Лаба_1 образцы данных.xlsx";
-        String dest = "C:\\Users\\nsoko\\OneDrive\\Desktop\\testEmpty9.xlsx";
-        Map<String,Map<String, Double>> calcMap = DataExporter.createMap(file, 1);
-        DataExporter.pasteCalculations(file, 1, dest, calcMap);
-//        DataStorage ds = new DataStorage();
-//        DataStorage ds = DataImporter.importFromExcel(file, 2, ds);
-//        System.out.println(data.keySet());
-//        System.out.println(data);
-//        Map<String,Double> gm = DataCalculations.calculateGeometricMean(ds);
-//        List<Double> am = DataCalculations.calculateArithmeticMean(ds);
-//        System.out.println("Средние арифметические: " + am);
-//        System.out.println("Средние геометрические: " + gm);
+        
+//        String file = "C:\\Users\\nsoko\\Downloads\\Р›Р°Р±Р°_1 РѕР±СЂР°Р·С†С‹ РґР°РЅРЅС‹С….xlsx";
+//        String dest = "C:\\Users\\nsoko\\OneDrive\\Desktop\\testEmpty9.xlsx";
+
+        String file = "C:\\Users\\Nastya\\Downloads\\Лаба_1 образцы данных.xlsx";
+        String dest = "C:\\Users\\Nastya\\Desktop\\test16_colored_full.xlsx";
+        
+        Map<String,Map<String, Double>> calcMap = DataExporter.createMap(file, 2);
+        
+        DataExporter.pasteCalculations(file, 2, dest, calcMap);
+//        System.out.println(calcMap);
+        
+        DataStorage ds = DataImporter.importFromExcel(file, 2);
+        double[][] covMatrix = DataCalculations.calculateCovarianceMatrix(ds);
+        for(int i = 0; i <covMatrix.length; i++){
+            for(int j = 0; j < covMatrix[i].length; j++){
+                    System.out.print(covMatrix[i][j]+ " ");
+            }
+            System.out.println("");
+        }
     }
 }
