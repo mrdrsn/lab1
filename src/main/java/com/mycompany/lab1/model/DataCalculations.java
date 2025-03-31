@@ -1,6 +1,8 @@
-package com.mycompany.lab1;
+package com.mycompany.lab1.model;
 
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.math3.distribution.NormalDistribution;
@@ -8,10 +10,15 @@ import org.apache.commons.math3.stat.descriptive.*;
 import org.apache.commons.math3.stat.correlation.*;
 
 public class DataCalculations {
+    static final String[] statisticNeeds = {"Среднее геометрическое", "Среднее арифметическое", "Оценка стандратного отклонения", "Размах",
+        "Количество элементов", "Коэффициент вариации", "Доверительный интервал мат. ожидания", "Оценка дисперсии", "Максимум", "Минимум"};
     
-    public static Map<String,Double> calculateGeometricMean(DataStorage sheetData) {
+    static Map<String, Map<String, Double>> statisticsMap  = new LinkedHashMap<>();
+    
+    
+    public static Map<String,Double> calculateGeometricMean(DataStorage fileData, int sheetIndex) {
         Map<String,Double> resultOfCalculations = new HashMap<>();
-        for(Map.Entry entry : sheetData.getSheetData().entrySet()){
+        for(Map.Entry entry : fileData.getSheetData(sheetIndex).entrySet()){
             List<Double> sample = (List<Double>) entry.getValue();
             String sampleName = (String) entry.getKey();
             DescriptiveStatistics d = new DescriptiveStatistics();
@@ -25,9 +32,9 @@ public class DataCalculations {
         return resultOfCalculations;
     }
     
-    public static Map<String, Double> calculateArithmeticMean(DataStorage sheetData){
+    public static Map<String, Double> calculateArithmeticMean(DataStorage fileData, int sheetIndex){
         Map<String,Double> resultOfCalculations = new HashMap<>();
-        for(Map.Entry entry: sheetData.getSheetData().entrySet()){
+        for(Map.Entry entry: fileData.getSheetData(sheetIndex).entrySet()){
             DescriptiveStatistics d = new DescriptiveStatistics();
             List<Double> sample = (List<Double>) entry.getValue();
             String sampleName = (String) entry.getKey();
@@ -40,9 +47,9 @@ public class DataCalculations {
         return resultOfCalculations;
     }
     
-    public static Map<String,Double> calculateStandardDeviation(DataStorage sheetData){
+    public static Map<String,Double> calculateStandardDeviation(DataStorage fileData, int sheetIndex){
         Map<String,Double> resultOfCalculations = new HashMap<>();
-        for(Map.Entry entry: sheetData.getSheetData().entrySet()){
+        for(Map.Entry entry: fileData.getSheetData(sheetIndex).entrySet()){
             DescriptiveStatistics d = new DescriptiveStatistics();
             List<Double> sample = (List<Double>) entry.getValue();
             String sampleName = (String) entry.getKey();
@@ -55,10 +62,9 @@ public class DataCalculations {
         return resultOfCalculations;
     }
     
-    
-    public static Map<String,Double> calculateSampleRange(DataStorage sheetData){
+    public static Map<String,Double> calculateSampleRange(DataStorage fileData, int sheetIndex){
         Map<String,Double> resultOfCalculations = new HashMap<>();
-        for(Map.Entry entry: sheetData.getSheetData().entrySet()){
+        for(Map.Entry entry: fileData.getSheetData(sheetIndex).entrySet()){
             DescriptiveStatistics d = new DescriptiveStatistics();
             List<Double> sample = (List<Double>) entry.getValue();
             String sampleName = (String) entry.getKey();
@@ -71,10 +77,9 @@ public class DataCalculations {
         return resultOfCalculations;
     }
     
-    
-    public static Map<String,Double> calculateSize(DataStorage sheetData){
+    public static Map<String,Double> calculateSize(DataStorage fileData, int sheetIndex){
         Map<String,Double> resultOfCalculations = new HashMap<>();
-        for(Map.Entry entry: sheetData.getSheetData().entrySet()){
+        for(Map.Entry entry: fileData.getSheetData(sheetIndex).entrySet()){
             DescriptiveStatistics d = new DescriptiveStatistics();
             List<Double> sample = (List<Double>) entry.getValue();
             String sampleName = (String) entry.getKey();
@@ -87,10 +92,9 @@ public class DataCalculations {
         return resultOfCalculations;
     }
     
-    
-    public static Map<String,Double> calculateMin(DataStorage sheetData){
+    public static Map<String,Double> calculateMin(DataStorage fileData, int sheetIndex){
         Map<String,Double> resultOfCalculations = new HashMap<>();
-        for(Map.Entry entry: sheetData.getSheetData().entrySet()){
+        for(Map.Entry entry: fileData.getSheetData(sheetIndex).entrySet()){
             DescriptiveStatistics d = new DescriptiveStatistics();
             List<Double> sample = (List<Double>) entry.getValue();
             String sampleName = (String) entry.getKey();
@@ -103,9 +107,9 @@ public class DataCalculations {
         return resultOfCalculations;
     }
     
-    public static Map<String,Double> calculateMax(DataStorage sheetData){
+    public static Map<String,Double> calculateMax(DataStorage fileData, int sheetIndex){
         Map<String,Double> resultOfCalculations = new HashMap<>();
-        for(Map.Entry entry: sheetData.getSheetData().entrySet()){
+        for(Map.Entry entry: fileData.getSheetData(sheetIndex).entrySet()){
             DescriptiveStatistics d = new DescriptiveStatistics();
             List<Double> sample = (List<Double>) entry.getValue();
             String sampleName = (String) entry.getKey();
@@ -118,9 +122,9 @@ public class DataCalculations {
         return resultOfCalculations;
     }
     
-    public static Map<String,Double> calculateVariance(DataStorage sheetData){
+    public static Map<String,Double> calculateVariance(DataStorage fileData, int sheetIndex){
         Map<String,Double> resultOfCalculations = new HashMap<>();
-        for(Map.Entry entry: sheetData.getSheetData().entrySet()){
+        for(Map.Entry entry: fileData.getSheetData(sheetIndex).entrySet()){
             DescriptiveStatistics d = new DescriptiveStatistics();
             List<Double> sample = (List<Double>) entry.getValue();
             String sampleName = (String) entry.getKey();
@@ -133,38 +137,33 @@ public class DataCalculations {
         return resultOfCalculations;
     }
     
-    
-    public static Map<String,Double> calculateMarginOfError(DataStorage sheetData){
+    public static Map<String,Double> calculateMarginOfError(DataStorage fileData, int sheetIndex){
         Map<String,Double> resultOfCalculations = new HashMap<>();
-        for(Map.Entry entry: sheetData.getSheetData().entrySet()){
+        for(Map.Entry entry: fileData.getSheetData(sheetIndex).entrySet()){
             DescriptiveStatistics d = new DescriptiveStatistics();
             List<Double> sample = (List<Double>) entry.getValue();
             String sampleName = (String) entry.getKey();
             for(double value: sample){
                 d.addValue(value);
             }
-            double mean = d.getMean(); // Среднее значение
-        double stdDev = d.getStandardDeviation(); // Стандартное отклонение
-        int n = (int) d.getN(); // Размер выборки
+            double mean = d.getMean(); 
+        double stdDev = d.getStandardDeviation();
+        int n = (int) d.getN();
 
-        // Критическое значение z (нормальное распределение)
         NormalDistribution normalDist = new NormalDistribution();
         double confidenceLevel = 0.95;
-        double alpha = 1 - confidenceLevel; // Уровень значимости
+        double alpha = 1 - confidenceLevel;
         double z = normalDist.inverseCumulativeProbability(1 - alpha / 2);
 
-        // Расчет доверительного интервала
         double marginOfError = z * (stdDev / Math.sqrt(n));
-        double lowerBound = mean - marginOfError;
-        double upperBound = mean + marginOfError;
         resultOfCalculations.put(sampleName, marginOfError);
         }
         return resultOfCalculations;
     }
     
-    public static Map<String,Double> calculateVarCoeff(DataStorage sheetData){
+    public static Map<String,Double> calculateVarCoeff(DataStorage fileData, int sheetIndex){
         Map<String,Double> resultOfCalculations = new HashMap<>();
-        for(Map.Entry entry: sheetData.getSheetData().entrySet()){
+        for(Map.Entry entry: fileData.getSheetData(sheetIndex).entrySet()){
             DescriptiveStatistics d = new DescriptiveStatistics();
             List<Double> sample = (List<Double>) entry.getValue();
             String sampleName = (String) entry.getKey();
@@ -176,37 +175,31 @@ public class DataCalculations {
         }
         return resultOfCalculations;
     }
-     public static double[][] calculateCovarianceMatrix(DataStorage sheetData) {
+    
+    public static double[][] calculateCovarianceMatrix(DataStorage fileData, int sheetIndex) {
             
-            // Определяем количество выборок и их размер
-            int numSamples = sheetData.getSheetData().size();
+            int numSamples = fileData.getSheetData(sheetIndex).size();
             int sampleSize = -1;
 
-            // Создаем двумерный массив для хранения данных
             double[][] dataArray = new double[numSamples][];
 
-            // Заполняем массив данными из Map
             int index = 0;
-            for (List<Double> sample : sheetData.getSheetData().values()) {
+            for (List<Double> sample : fileData.getSheetData(sheetIndex).values()) {
                 if (sampleSize == -1) {
                     sampleSize = sample.size();
                 } else if (sample.size() != sampleSize) {
                     throw new IllegalArgumentException("Все выборки должны иметь одинаковый размер");
                 }
 
-                // Преобразуем List<Double> в массив double[]
                 dataArray[index] = sample.stream().mapToDouble(Double::doubleValue).toArray();
                 index++;
             }
 
-            // Транспонируем массив, чтобы столбцы соответствовали выборкам
             double[][] transposedData = transpose(dataArray);
 
-            // Создаем объект Covariance и рассчитываем ковариационную матрицу
             Covariance covariance = new Covariance(transposedData);
             return covariance.getCovarianceMatrix().getData();
     }
-
     private static double[][] transpose(double[][] matrix) {
         int rows = matrix.length;
         int cols = matrix[0].length;
@@ -221,4 +214,28 @@ public class DataCalculations {
         return transposed;
     }
     
+    public static void createMap(DataStorage storage, int sheetIndex) throws IOException {
+
+        Map<String, Double> geometricMeanMap = calculateGeometricMean(storage, sheetIndex);
+        Map<String, Double> arithmeticMeanMap = calculateArithmeticMean(storage, sheetIndex);
+        Map<String, Double> standardDeviationMap = calculateStandardDeviation(storage, sheetIndex);
+        Map<String, Double> sampleRangeMap = calculateSampleRange(storage, sheetIndex);
+        Map<String, Double> sizeMap = calculateSize(storage, sheetIndex);
+        Map<String, Double> minMap = calculateMin(storage, sheetIndex);
+        Map<String, Double> maxMap = calculateMax(storage, sheetIndex);
+        Map<String, Double> marginOfErrorMap = calculateMarginOfError(storage, sheetIndex);
+        Map<String, Double> varianceMap = calculateVariance(storage, sheetIndex);
+        Map<String, Double> varCoeffMap = calculateVarCoeff(storage, sheetIndex);
+
+        statisticsMap.put(statisticNeeds[0], geometricMeanMap); // Среднее геометрическое
+        statisticsMap.put(statisticNeeds[1], arithmeticMeanMap); // Среднее арифметическое
+        statisticsMap.put(statisticNeeds[2], standardDeviationMap); // Оценка стандартного отклонения
+        statisticsMap.put(statisticNeeds[3], sampleRangeMap); // Размах
+        statisticsMap.put(statisticNeeds[4], sizeMap); // Количество элементов
+        statisticsMap.put(statisticNeeds[5], varCoeffMap); // Коэффициент вариации
+        statisticsMap.put(statisticNeeds[6], marginOfErrorMap); //значение сдвига для доверительного интервала
+        statisticsMap.put(statisticNeeds[7], varianceMap); // Оценка дисперсии
+        statisticsMap.put(statisticNeeds[8], maxMap); // Максимум
+        statisticsMap.put(statisticNeeds[9], minMap); // Минимум
+    }   
 }
