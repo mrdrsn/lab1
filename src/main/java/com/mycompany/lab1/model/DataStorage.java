@@ -1,5 +1,6 @@
 package com.mycompany.lab1.model;
 
+import exceptions.InvalidFileFormatException;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -7,6 +8,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import org.apache.poi.openxml4j.exceptions.NotOfficeXmlFileException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.CellValue;
@@ -46,8 +48,9 @@ public class DataStorage {
     }
     
     //выгрузка всего эксель документа в единый data storage
-    public static DataStorage importFromExcel(String file) throws IOException {
+    public static DataStorage importFromExcel(String file) throws IOException, InvalidFileFormatException {
         DataStorage ds = new DataStorage();
+        try{
         Workbook data = new XSSFWorkbook(new FileInputStream(file));
         Iterator <Sheet> sheetIter = data.iterator();
         int sheetIndex = 0;
@@ -93,6 +96,9 @@ public class DataStorage {
         }
         data.close();
         return ds;
+        } catch(NotOfficeXmlFileException ex){
+            throw new InvalidFileFormatException("Файл не является допустимым файлом Excel (.xlsx)", ex);
+        }
     }
     
     private static boolean isRowEmpty(Row row) {

@@ -3,6 +3,7 @@ package com.mycompany.lab1.view;
 import com.mycompany.lab1.controller.IController;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.io.IOException;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -10,8 +11,8 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import org.apache.poi.openxml4j.exceptions.NotOfficeXmlFileException;
 
+public class GUI extends JFrame {
 
-public class GUI extends JFrame{
     private JButton importButton;
     private JButton exportButton;
     private JButton exitButton;
@@ -20,13 +21,15 @@ public class GUI extends JFrame{
     public GUI(IController controller) {
         super("Лабораторная работа 1");
         this.controller = controller;
-        setLayout(new GridLayout(3,1));
-        
+        setLayout(new GridLayout(3, 1));
+
         importButton = new JButton("Выбрать .xlsx файл для импорта");
         add(importButton);
-        
+
         importButton.addActionListener((ActionEvent e) -> {
             JFileChooser fileChooser = new JFileChooser();
+            File defaultDirectory = new File("C:\\Users\\nsoko\\OneDrive\\Desktop\\for_lab1");
+            fileChooser.setCurrentDirectory(defaultDirectory);
             int result = fileChooser.showOpenDialog(null);
 
             if (result == JFileChooser.APPROVE_OPTION) {
@@ -37,24 +40,20 @@ public class GUI extends JFrame{
                     JOptionPane.showMessageDialog(null, "Файл успешно импортирован!");
                 } catch (IOException ex) {
                     JOptionPane.showMessageDialog(null, "Ошибка при импорте файла: " + ex.getMessage(), "Ошибка", JOptionPane.ERROR_MESSAGE);
-                } catch(NullPointerException ex){
-                    JOptionPane.showMessageDialog(null, "Ошибка при импорте файла. Формат содержимого документа не поддерживается.", "Ошибка", JOptionPane.ERROR_MESSAGE);
-                } catch(NotOfficeXmlFileException ex){
-                    JOptionPane.showMessageDialog(null, "Ошибка при экспорте файла. Загрузите файл с расширением .xlsx!", "Ошибка", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
-        
+
         exportButton = new JButton("Создать .xlsx файл для рассчитанных показателей");
         exportButton.setEnabled(false);
         add(exportButton);
-        
+
         exportButton.addActionListener((ActionEvent e) -> {
             if (controller.getStorage() == null) {
                 JOptionPane.showMessageDialog(null, "Сначала импортируйте файл!", "Ошибка", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            
+
             String[] sheetNames = controller.controllerGetSheetNames();
             if (sheetNames.length == 0) {
                 JOptionPane.showMessageDialog(null, "Нет доступных листов для экспорта.", "Ошибка", JOptionPane.ERROR_MESSAGE);
@@ -62,13 +61,13 @@ public class GUI extends JFrame{
             }
 
             Object selectedObject = JOptionPane.showInputDialog(
-                null,
-                "Выберите лист для экспорта:",
-                "Выбор листа",
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                sheetNames,
-                sheetNames[0]
+                    null,
+                    "Выберите лист для экспорта:",
+                    "Выбор листа",
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    sheetNames,
+                    sheetNames[0]
             );
 
             if (selectedObject == null) {
@@ -101,18 +100,18 @@ public class GUI extends JFrame{
                 }
             }
         });
-        
+
         exitButton = new JButton("Выход из программы");
         add(exitButton);
-        
+
         exitButton.addActionListener((ActionEvent e) -> {
             System.exit(0);
         });
-        setBounds(650,250,600,400);
+        setBounds(650, 250, 600, 400);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
-    
+
     public void setExportButtonEnabled(boolean enabled) {
         exportButton.setEnabled(enabled);
     }

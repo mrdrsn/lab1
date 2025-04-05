@@ -5,6 +5,7 @@ import com.mycompany.lab1.model.DataCalculations;
 import com.mycompany.lab1.view.GUI;
 import com.mycompany.lab1.model.DataExporter;
 import com.mycompany.lab1.model.DataStorage;
+import exceptions.InvalidFileFormatException;
 import java.io.IOException;
 
 public class Controller implements IController {
@@ -18,11 +19,15 @@ public class Controller implements IController {
     
     @Override
     public void controllerImportData(String filePath) throws IOException {
+    try {
         storage = DataStorage.importFromExcel(filePath);
-        for(String s: storage.getSheetNames()){
+        for (String s : storage.getSheetNames()) {
             System.out.println(s);
         }
+    } catch (InvalidFileFormatException ex) {
+        throw new IOException("Ошибка при импорте файла: " + ex.getMessage(), ex);
     }
+}
     @Override
     public void controllerChooseSheet(int index) {
         exporter = new DataExporter();
